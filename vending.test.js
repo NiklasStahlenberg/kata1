@@ -42,12 +42,20 @@ class VendingMachine {
     this.state.tempCoins.push(coin);
     return this.getInsertedAmount();
   }
-  selectProduct(value) {
-    let valid = true;
-    if (valid) {
-      this.state.allCoins = [...this.state.allCoins, ...this.state.tempCoins];
+  selectProduct(value) {    
+    const product = this.products[value];
+    let valid = this.getInsertedAmount() > product.price;
+    
+    if (!valid) {        
+      throw new Error("insufficient amount");
     }
-    return this.products[value];
+
+    let change = this.getInsertedAmount() - product.price;
+
+    return {
+        product,
+        change
+    }
   }
 
   getState() {
@@ -92,3 +100,13 @@ test("selectProduct should return selected product and change", () => {
   expect(productAndChange.product.name).toEqual(products[2].name);
   expect(productAndChange.change).toEqual(20);
 });
+
+test("temporary coins can not exceed 10", () => {
+    const machine = new VendingMachine();
+
+    for(let i = 0; i < 11; i++) {
+        machine.insertCoin(5);
+    }
+
+    expect(machine.getTempCoins().length).toEqual(10);
+})
