@@ -63,3 +63,13 @@ test("Should throw if coin is not of value 5, 10, 20, 50", () => {
   const machine = new VendingMachine();
   expect(machine.insertCoin(7)).toThrow();
 });
+
+test("Should return total amount of inserted coins", () => {
+  const machine = new VendingMachine();
+  let total = machine.insertCoin(5);
+  total = machine.insertCoin(10);
+  total = machine.insertCoin(20);
+  total = machine.insertCoin(50);
+
+  expect(total).toEqual(85);
+});
