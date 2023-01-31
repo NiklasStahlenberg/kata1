@@ -14,6 +14,13 @@ Temporary coin storage can take up to 10 coins
 */
 const products = require("./product");
 
+const deepFreeze = (obj) => {
+  Object.keys(obj).forEach((prop) => {
+    if (typeof obj[prop] === "object") deepFreeze(obj[prop]);
+  });
+  return Object.freeze(obj);
+};
+
 class VendingMachine {
   constructor() {
     this.validCoins = [5, 10, 20, 50];
