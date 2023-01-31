@@ -6,6 +6,7 @@ function fizzBuzz(arr) {
   const sorted = arr.sort((a, b) => b - a);
   const replaced = sorted.map((num) => {
     if (num % 3 === 0 && num % 5) {
+      return "FizzBuzz";
     }
   });
 }
