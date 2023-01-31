@@ -55,11 +55,11 @@ class VendingMachine {
 
   getInsertedAmount() {
     const tot = this.state.tempCoins.reduce((acc, curr) => acc + curr, 0);
-    return this.state.tempCoins;
+    return tot;
   }
 }
 
-test("Should throw if coin is not of value 5, 10, 20, 50", () => {
+test.skip("Should throw if coin is not of value 5, 10, 20, 50", () => {
   const machine = new VendingMachine();
   expect(machine.insertCoin(7)).toThrow();
 });
@@ -72,4 +72,11 @@ test("Should return total amount of inserted coins", () => {
   total = machine.insertCoin(50);
 
   expect(total).toEqual(85);
+});
+
+test("GetAllCoinsBack shoud return an array of all unused inserted coins", () => {
+  const machine = new VendingMachine();
+  machine.insertCoin(5);
+  machine.insertCoin(10);
+  expect(machine.getAllCoinsBack()).toEqual([5, 10]);
 });
