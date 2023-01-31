@@ -27,7 +27,7 @@ class VendingMachine {
     this.validCoins = Object.freeze([5, 10, 20, 50]); //freeze object to make "immutable"
     this.products = Object.freeze(products); //freeze object to make "immutable"
     this.state = {
-      coinsInMachine: [], //refactor name
+      coinsInMachine: [...initChange], //refactor name
       insertedCoins: [], //rename
     };
   }
@@ -86,8 +86,7 @@ class VendingMachine {
       ...insertedCoins,
     ]; //new array of allCoins
     //fetch change from allCoins
-    const change = this.getChangeFromMachine(moneyleft);
-    console.log(change);
+    this.getChangeFromMachine(moneyleft);
     this.resetInsertedCoins();
 
     return {
@@ -100,19 +99,26 @@ class VendingMachine {
     let sorted = [...this.state.coinsInMachine].sort((a, b) => b - a);
     let sum = 0;
     let indexes = [];
+    let newRest = rest;
     for (let i = 0; i < sorted.length; i++) {
-      if (sorted[i] > rest) continue;
+      console.log(sum, rest, newRest);
+      if (newRest === 0) break;
+      if (sorted[i] > newRest) continue;
 
       if (sorted[i] === rest) {
-        this.state.coinsInMachine = [...sorted.slice(i, 1)];
+        console.log("First is even for change");
+        this.state.coinsInMachine = [...sorted.slice(i, i + 1)];
         break;
-      } else if (sum === rest) {
-        indexes.forEach((idx) => sorted.slice(idx, 1));
-        this.state.coinsInMachine = [...sorted.slice(i, 1)];
+      } else if (newRest === 0) {
+        console.log("Sum is even for change");
+        indexes.forEach((idx) => sorted.slice(idx, idx + 1));
+        this.state.coinsInMachine = [...sorted];
         break;
       } else {
+        console.log("Keep adding to sum", sum);
         indexes.push(sorted[i]);
         sum += sorted[i];
+        newRest -= sorted[i];
       }
     }
   }
@@ -187,7 +193,7 @@ test("selectProduct should insert coin to machine and empty the tempCoin", () =>
   machine.selectProduct(3);
 
   expect(machine.getState().insertedCoins.length).toEqual(0);
-  expect(machine.getState().coinsInMachine.length).toEqual(5);
+  expect(machine.getState().coinsInMachine.length).toEqual(48);
 });
 
 test.skip("should get change from allCoins when not even", () => {
