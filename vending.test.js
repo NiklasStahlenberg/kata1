@@ -104,10 +104,12 @@ class VendingMachine {
       console.log(sum, rest, newRest);
       if (newRest === 0) {
         //Remove selected instances from array
-        for (let j = 0; j < j.length; j++) {
+        console.log(indexes);
+        for (let j = 0; j < indexes.length; j++) {
           sorted = [...sorted.slice(indexes[j], indexes[j] + 1)];
         }
         this.state.coinsInMachine = [...sorted];
+        break;
       }
       if (sorted[i] > newRest) continue;
 
@@ -118,7 +120,7 @@ class VendingMachine {
         break;
       } else {
         console.log("Keep adding to sum", sum);
-        indexes.push(sorted[i]);
+        indexes.push(i);
         sum += sorted[i];
         newRest -= sorted[i];
       }
