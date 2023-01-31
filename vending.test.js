@@ -79,4 +79,5 @@ test("GetAllCoinsBack shoud return an array of all unused inserted coins", () =>
   machine.insertCoin(5);
   machine.insertCoin(10);
   expect(machine.getAllCoinsBack()).toEqual([5, 10]);
+  expect(machine.getInsertedAmount()).toEqual(0);
 });
