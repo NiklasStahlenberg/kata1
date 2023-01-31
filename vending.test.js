@@ -65,8 +65,7 @@ class VendingMachine {
     //     change: this.getSumOfArray(this.state.tempCoins) - product.price,
     //   };
     // }
-
-    let sortedCoins = [...this.state.insertedCoins].sort((a, b) => a - b); //new array, no mutate
+    
     let currentAmount = 0;
     let coinsToPushToAllCoins = [];
 
@@ -77,10 +76,14 @@ class VendingMachine {
       sortedCoins.shift();
     }
 
-    const rest = currentAmount - product.price;
+    let insertedCoins = this.state.insertedCoins();
+    let moneyleft = getinsertedamount - product.price;
+
+    //const rest = currentAmount - product.price;
     sortedCoins.push(rest);
-    this.state.coinsInMachine = [...this.state.coinsInMachine, ...coinsToPushToAllCoins]; //new array of allCoins
+    this.state.coinsInMachine = [...this.state.coinsInMachine, ...insertedCoins]; //new array of allCoins
     //fetch change from allCoins
+    var blabla = getChangeFromMachine(moneyleft);
 
     this.resetInsertedCoins();
 
