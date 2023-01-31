@@ -45,8 +45,9 @@ class VendingMachine {
   selectProduct(value) {
     let valid = true;
     if (valid) {
-      this.state = [...this.allCoins, ...this.tempCoins];
+      this.state.allCoins = [...this.state.allCoins, ...this.state.tempCoins];
     }
+    return this.products[value];
   }
 
   getState() {
@@ -82,9 +83,12 @@ test("GetAllCoinsBack shoud return an array of all unused inserted coins", () =>
   expect(machine.getInsertedAmount()).toEqual(0);
 });
 
-test("selectProduct should return selected product", () => {
-    const machine = new VendingMachine();
-    const product = machine.selectProduct(2);
-
-    expect(product.name).toEqual(products[2].name);
-})
+test("selectProduct should return selected product and change", () => {
+  const machine = new VendingMachine();
+  machine.insertCoin(5);
+  machine.insertCoin(20);
+  machine.insertCoin(10);
+  const productAndChange = machine.selectProduct(2);
+  expect(productAndChange.product.name).toEqual(products[2].name);
+  expect(productAndChange.change).toEqual(20);
+});
