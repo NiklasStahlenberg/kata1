@@ -12,15 +12,22 @@ You can store up to 50 coins of each type in the machine
 Temporary coin storage can take up to 10 coins
 
 */
-
 const products = require("./product");
 
-const coins = {
-  five: 5,
-  ten: 10,
-  twenty: 20,
-  fifty: 50,
-};
+class VendingMachine {
+    constructor(){
+        this.validCoins = [5, 10, 20, 50];
+    }
+    
+    insertCoin(coin) {
+        if(!this.validCoins.includes(coin)) {
+            throw new Error;
+        }
+    }
+}
+
+
+
 
 test("Should throw if coin is not of value 5, 10, 20, 50", () => {
   const machine = new VendingMachine();
