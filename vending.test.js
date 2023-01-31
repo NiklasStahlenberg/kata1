@@ -51,7 +51,6 @@ class VendingMachine {
   selectProduct(value) {
     const product = this.products[value];
     let valid = this.getInsertedAmount() > product.price;
-    let change = 0;
     if (!valid) {
       throw new Error("insufficient amount");
     }
@@ -65,32 +64,57 @@ class VendingMachine {
     //     change: this.getSumOfArray(this.state.tempCoins) - product.price,
     //   };
     // }
-    
-    let currentAmount = 0;
-    let coinsToPushToAllCoins = [];
 
-    while (currentAmount < product.price) {
-      const coin = sortedCoins[0];
-      currentAmount += coin;
-      coinsToPushToAllCoins.push(coin);
-      sortedCoins.shift();
-    }
+    // let currentAmount = 0;
+    // let coinsToPushToAllCoins = [];
 
-    let insertedCoins = this.state.insertedCoins();
-    let moneyleft = getinsertedamount - product.price;
+    // while (currentAmount < product.price) {
+    //   const coin = sortedCoins[0];
+    //   currentAmount += coin;
+    //   coinsToPushToAllCoins.push(coin);
+    //   sortedCoins.shift();
+    // }
+
+    let insertedCoins = this.state.insertedCoins;
+    let moneyleft = this.getSumOfArray(insertedCoins) - product.price;
 
     //const rest = currentAmount - product.price;
-    sortedCoins.push(rest);
-    this.state.coinsInMachine = [...this.state.coinsInMachine, ...insertedCoins]; //new array of allCoins
-    //fetch change from allCoins
-    var blabla = getChangeFromMachine(moneyleft);
+    // sortedCoins.push(rest);
 
+    this.state.coinsInMachine = [
+      ...this.state.coinsInMachine,
+      ...insertedCoins,
+    ]; //new array of allCoins
+    //fetch change from allCoins
+    const change = this.getChangeFromMachine(moneyleft);
+    console.log(change);
     this.resetInsertedCoins();
 
     return {
       product,
-      change: this.getSumOfArray(sortedCoins),
+      change: moneyleft,
     };
+  }
+
+  getChangeFromMachine(rest) {
+    let sorted = [...this.state.coinsInMachine].sort((a, b) => b - a);
+    let sum = 0;
+    let indexes = [];
+    for (let i = 0; i < sorted.length; i++) {
+      if (sorted[i] > rest) continue;
+
+      if (sorted[i] === rest) {
+        this.state.coinsInMachine = [...sorted.slice(i, 1)];
+        break;
+      } else if (sum === rest) {
+        indexes.forEach((idx) => sorted.slice(idx, 1));
+        this.state.coinsInMachine = [...sorted.slice(i, 1)];
+        break;
+      } else {
+        indexes.push(sorted[i]);
+        sum += sorted[i];
+      }
+    }
   }
 
   getSumOfArray(arr) {
