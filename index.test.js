@@ -1,4 +1,5 @@
-function fizzBuzz(arr) {
+function fizzBuzz(length) {
+  const arr = Array.from(Array(length).keys());
   const sorted = arr.sort((a, b) => a - b);
   const replaced = sorted.map((num) => {
     if (num === 0) return num;
@@ -15,7 +16,5 @@ function fizzBuzz(arr) {
   return replaced;
 }
 test("number that can be divided by three should be replaced with fizz", () => {
-  let arr = [0, 1, 2, 3, 4, 5, 6];
-
-  expect(fizzBuzz(arr)).toEqual([0, 1, 2, "fizz", 4, "buzz", "fizz"]);
+  expect(fizzBuzz(7)).toEqual([0, 1, 2, "fizz", 4, "buzz", "fizz"]);
 });
