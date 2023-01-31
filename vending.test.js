@@ -23,8 +23,8 @@ const deepFreeze = (obj) => {
 
 class VendingMachine {
   constructor() {
-    this.validCoins = [5, 10, 20, 50];
-    this.products = products;
+    this.validCoins = Object.freeze([5, 10, 20, 50]);
+    this.products = Object.freeze(products);
     this.state = {
       allCoins: [],
       tempCoins: [],
@@ -47,7 +47,7 @@ class VendingMachine {
       throw new Error("Not a valid coin");
     }
     if (this.state.tempCoins.length < 10) {
-      this.state.tempCoins.push(coin);
+      this.state.tempCoins = [...this.state.tempCoins, coin];
     }
     return this.getInsertedAmount();
   }
