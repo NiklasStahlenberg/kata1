@@ -96,7 +96,7 @@ class VendingMachine {
   }
 
   getChangeFromMachine(rest) {
-    let sorted = [...this.state.coinsInMachine].sort((a, b) => b - a);
+    const sorted = [...this.state.coinsInMachine].sort((a, b) => b - a);
     let modified = [...sorted];
     let sum = 0;
     let indexes = [];
@@ -106,9 +106,11 @@ class VendingMachine {
       if (newRest === 0) {
         //Remove selected instances from array
         console.log(indexes);
+        console.log(modified);
         for (let j = 0; j < indexes.length; j++) {
-          modified = [...modified.slice(indexes[j], indexes[j] + 1)];
+          modified.splice(indexes[j], 1);
         }
+        console.log(modified);
         this.state.coinsInMachine = [...modified];
         break;
       }
@@ -116,7 +118,7 @@ class VendingMachine {
 
       if (sorted[i] === rest) {
         console.log("First is even for change");
-        modified = [...modified.slice(i, i + 1)];
+        modified.splice(i, 1);
         this.state.coinsInMachine = [...modified];
         break;
       } else {
