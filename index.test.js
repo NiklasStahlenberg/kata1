@@ -17,5 +17,5 @@ function fizzBuzz(arr) {
 test("number that can be divided by three should be replaced with fizz", () => {
   let arr = [0, 1, 2, 3, 4, 5, 6];
 
-  expect(fizzBuzz(arr)).toBe([0, 1, 2, "fizz", 4, "buzz", "fizz"]);
+  expect(fizzBuzz(arr)).toEqual([0, 1, 2, "fizz", 4, "buzz", "fizz"]);
 });
