@@ -21,3 +21,8 @@ const coins = {
   twenty: 20,
   fifty: 50,
 };
+
+test("Should throw if coin is not of value 5, 10, 20, 50", () => {
+  const machine = new VendingMachine();
+  expect(machine.insertCoin(7)).toThrow();
+});
