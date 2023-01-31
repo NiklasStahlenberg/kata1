@@ -30,7 +30,7 @@ class VendingMachine {
   resetTempCoins() {
     this.state.tempCoins = [];
   }
-  returnCoins() {
+  getAllCoinsBack() {
     const ret = this.state.tempCoins;
     this.state.tempCoins = [];
     return ret;
@@ -81,3 +81,10 @@ test("GetAllCoinsBack shoud return an array of all unused inserted coins", () =>
   expect(machine.getAllCoinsBack()).toEqual([5, 10]);
   expect(machine.getInsertedAmount()).toEqual(0);
 });
+
+test("selectProduct should return selected product", () => {
+    const machine = new VendingMachine();
+    const product = machine.selectProduct(2);
+
+    expect(product.name).toEqual(products[2].name);
+})

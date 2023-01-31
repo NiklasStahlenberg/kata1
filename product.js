@@ -4,32 +4,32 @@ const products = {
     price: 10,
   },
   2: {
-    name: "sandwich",
-    price: 10,
+    name: "icecream",
+    price: 15,
   },
   3: {
-    name: "sandwich",
-    price: 10,
+    name: "doughnut",
+    price: 25,
   },
   4: {
-    name: "sandwich",
-    price: 10,
+    name: "tomato",
+    price: 15,
   },
   5: {
-    name: "sandwich",
-    price: 10,
+    name: "cashew",
+    price: 5,
   },
   6: {
-    name: "sandwich",
-    price: 10,
+    name: "cola",
+    price: 50,
   },
   7: {
-    name: "sandwich",
-    price: 10,
+    name: "beer",
+    price: 5,
   },
   8: {
-    name: "sandwich",
-    price: 10,
+    name: "smoked ribs",
+    price: 25,
   },
   9: {
     name: "sandwich",
