@@ -13,13 +13,21 @@ Temporary coin storage can take up to 10 coins
 
 */
 const products = require("./product");
+const { sumFinder } = require("./utils");
+console.log(sumFinder([5, 5, 10], 15));
+const initChange = [
+  ...Array(10).fill(5),
+  ...Array(10).fill(10),
+  ...Array(10).fill(20),
+  ...Array(10).fill(50),
+];
 
 class VendingMachine {
   constructor() {
     this.validCoins = Object.freeze([5, 10, 20, 50]); //freeze object to make "immutable"
     this.products = Object.freeze(products); //freeze object to make "immutable"
     this.state = {
-      allCoins: [],
+      allCoins: [...initChange],
       tempCoins: [],
       totalSum: 0,
     };
@@ -40,28 +48,36 @@ class VendingMachine {
       throw new Error("Not a valid coin");
     }
     if (this.state.tempCoins.length < 10) {
-      this.state.tempCoins = [...this.state.tempCoins, coin] //create new array instead of mutating;
+      this.state.tempCoins = [...this.state.tempCoins, coin]; //create new array instead of mutating;
     }
     return this.getInsertedAmount();
   }
   selectProduct(value) {
     const product = this.products[value];
     let valid = this.getInsertedAmount() > product.price;
-
+    let change = 0;
     if (!valid) {
       throw new Error("insufficient amount");
     }
 
-    let change = this.getInsertedAmount() - product.price;
+    // const evenAmount = sumFinder(this.state.tempCoins, product.price);
+
+    // if (evenAmount.even) {
+    //   //insert used coins to allCoins
+    //   return {
+    //     product,
+    //     change: this.getSumOfArray(this.state.tempCoins) - product.price,
+    //   };
+    // }
     let sortedCoins = [...this.state.tempCoins].sort((a, b) => a - b); //new array, no mutate
     let currentAmount = 0;
     let coinsToPushToAllCoins = [];
 
-    while(currentAmount < product.price) {
-        const coin = sortedCoins[0];
-        currentAmount += coin;
-        coinsToPushToAllCoins.push(coin);
-        sortedCoins.shift();   
+    while (currentAmount < product.price) {
+      const coin = sortedCoins[0];
+      currentAmount += coin;
+      coinsToPushToAllCoins.push(coin);
+      sortedCoins.shift();
     }
 
     const rest = currentAmount - product.price;
@@ -70,7 +86,6 @@ class VendingMachine {
     //fetch change from allCoins
 
     this.resetTempCoins();
-
 
     return {
       product,
@@ -86,8 +101,12 @@ class VendingMachine {
     return this.state;
   }
 
-  getInsertedAmount() {   
+  getInsertedAmount() {
     return this.getSumOfArray(this.state.tempCoins);
+  }
+
+  getCoinsOfType(type) {
+    return this.state.allCoins.filter((t) => t === type);
   }
 }
 
@@ -147,15 +166,15 @@ test("selectProduct should insert coin to machine and empty the tempCoin", () =>
   expect(machine.getState().allCoins.length).toEqual(5);
 });
 
-test("should get change from allCoins", () => {
-    const machine = new VendingMachine();
+test("should get change from allCoins when not even", () => {
+  const machine = new VendingMachine();
 
-    for (let i = 0; i < 3; i++) {
-        machine.insertCoin(10);
-    }
+  for (let i = 0; i < 3; i++) {
+    machine.insertCoin(10);
+  }
 
-    let productAndChange = machine.selectProduct(2);
+  let productAndChange = machine.selectProduct(2);
 
-    expect(productAndChange.change).toEqual(15);
-    expect(machine.getCoinsOfType(5).length).toEqual(1);
-})
+  expect(productAndChange.change).toEqual(15);
+  expect(machine.getCoinsOfType(5).length).toEqual(1);
+});
